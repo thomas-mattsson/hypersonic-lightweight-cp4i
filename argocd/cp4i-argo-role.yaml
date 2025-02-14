@@ -34,6 +34,7 @@ rules:
       - tempo.grafana.com
       - opentelemetry.io
       - admissionregistration.k8s.io
+      - customresourcedefinitions.apiextensions.k8s.io 
       - ""
     resources:
       - '*'
