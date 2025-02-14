@@ -1,0 +1,465 @@
+# inventory/stepzenGraphOperator/files/deploy/operatory.yaml from https://github.com/IBM/cloud-pak/blob/master/repo/case/ibm-stepzen-case/1.1.0/ibm-stepzen-case-1.1.0.tgz
+# namespace stepzen replaced with cp4i
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  labels:
+    app.kubernetes.io/component: rbac
+    app.kubernetes.io/created-by: stepzen-graph-operator
+    app.kubernetes.io/instance: stepzen-graph-operator
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/name: serviceaccount
+    app.kubernetes.io/part-of: stepzen-graph-operator
+    icpdsupport/addOnId: stepzen
+  name: stepzen-graph-operator
+  namespace: cp4i
+spec:
+  template:
+    spec:
+      containers: []
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  labels:
+    app.kubernetes.io/component: rbac
+    app.kubernetes.io/created-by: stepzen-graph-operator
+    app.kubernetes.io/instance: stepzen-graph-leader-election-role
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/name: role
+    app.kubernetes.io/part-of: stepzen-graph-operator
+    icpdsupport/addOnId: stepzen
+  name: stepzen-graph-leader-election-role
+  namespace: cp4i
+rules:
+  - apiGroups:
+      - ""
+    resources:
+      - configmaps
+    verbs:
+      - get
+      - list
+      - watch
+      - create
+      - update
+      - patch
+      - delete
+  - apiGroups:
+      - coordination.k8s.io
+    resources:
+      - leases
+    verbs:
+      - get
+      - list
+      - watch
+      - create
+      - update
+      - patch
+      - delete
+  - apiGroups:
+      - ""
+    resources:
+      - events
+    verbs:
+      - create
+      - patch
+spec:
+  template:
+    spec:
+      containers: []
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    icpdsupport/addOnId: stepzen
+  name: stepzen-graph-manager-role
+rules:
+  - apiGroups:
+      - ""
+    resources:
+      - events
+      - serviceaccounts
+      - services
+      - services/finalizers
+    verbs:
+      - create
+      - delete
+      - get
+      - list
+      - patch
+      - update
+      - watch
+  - apiGroups:
+      - ""
+    resources:
+      - secrets
+    verbs:
+      - create
+      - get
+      - list
+      - watch
+  - apiGroups:
+      - admissionregistration.k8s.io
+    resources:
+      - mutatingwebhookconfigurations
+      - validatingwebhookconfigurations
+    verbs:
+      - create
+      - delete
+      - get
+      - list
+      - patch
+      - update
+      - watch
+  - apiGroups:
+      - apps
+    resources:
+      - deployments
+    verbs:
+      - create
+      - delete
+      - get
+      - list
+      - patch
+      - update
+      - watch
+  - apiGroups:
+      - apps
+    resources:
+      - deployments/finalizers
+    verbs:
+      - update
+  - apiGroups:
+      - autoscaling
+    resources:
+      - horizontalpodautoscalers
+    verbs:
+      - create
+      - delete
+      - get
+      - list
+      - patch
+      - update
+      - watch
+  - apiGroups:
+      - networking.k8s.io
+    resources:
+      - networkpolicies
+    verbs:
+      - create
+      - delete
+      - get
+      - list
+      - patch
+      - update
+      - watch
+  - apiGroups:
+      - stepzen-graph.ibm.com
+    resources:
+      - stepzengraphservers
+    verbs:
+      - create
+      - delete
+      - get
+      - list
+      - patch
+      - update
+      - watch
+  - apiGroups:
+      - stepzen-graph.ibm.com
+    resources:
+      - stepzengraphservers/finalizers
+    verbs:
+      - update
+  - apiGroups:
+      - stepzen-graph.ibm.com
+    resources:
+      - stepzengraphservers/status
+    verbs:
+      - get
+      - patch
+      - update
+spec:
+  template:
+    spec:
+      containers: []
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    icpdsupport/addOnId: stepzen
+  name: stepzen-graph-webhook-role
+rules:
+  - apiGroups:
+      - admissionregistration.k8s.io
+    resources:
+      - mutatingwebhookconfigurations
+      - validatingwebhookconfigurations
+    verbs:
+      - get
+      - update
+      - delete
+spec:
+  template:
+    spec:
+      containers: []
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  labels:
+    app.kubernetes.io/component: rbac
+    app.kubernetes.io/created-by: stepzen-graph-operator
+    app.kubernetes.io/instance: stepzen-graph-leader-election-rolebinding
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/name: rolebinding
+    app.kubernetes.io/part-of: stepzen-graph-operator
+    icpdsupport/addOnId: stepzen
+  name: stepzen-graph-leader-election-rolebinding
+  namespace: cp4i
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: stepzen-graph-leader-election-role
+subjects:
+  - kind: ServiceAccount
+    name: stepzen-graph-operator
+    namespace: cp4i
+spec:
+  template:
+    spec:
+      containers: []
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  labels:
+    app.kubernetes.io/component: rbac
+    app.kubernetes.io/created-by: stepzen-graph-operator
+    app.kubernetes.io/instance: stepzen-graph-manager-rolebinding
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/name: clusterrolebinding
+    app.kubernetes.io/part-of: stepzen-graph-operator
+    icpdsupport/addOnId: stepzen
+  name: stepzen-graph-manager-rolebinding
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: stepzen-graph-manager-role
+subjects:
+  - kind: ServiceAccount
+    name: stepzen-graph-operator
+    namespace: cp4i
+spec:
+  template:
+    spec:
+      containers: []
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  labels:
+    icpdsupport/addOnId: stepzen
+  name: stepzen-graph-webhook-role-binding
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: stepzen-graph-webhook-role
+subjects:
+  - kind: ServiceAccount
+    name: stepzen-graph-operator
+    namespace: cp4i
+spec:
+  template:
+    spec:
+      containers: []
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/component: webhook
+    app.kubernetes.io/created-by: stepzen-graph-operator
+    app.kubernetes.io/instance: webhook-service
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/name: service
+    app.kubernetes.io/part-of: stepzen-graph-operator
+    icpdsupport/addOnId: stepzen
+  name: stepzen-graph-webhook-service
+  namespace: cp4i
+spec:
+  ports:
+    - port: 443
+      protocol: TCP
+      targetPort: 9443
+  selector:
+    control-plane: stepzen-graph-operator
+  template:
+    spec:
+      containers: []
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    productID: 6ba6beb1cd3e49549b780f845293d546
+    productMetric: FREE
+    productName: IBM API Connect for GraphQL
+  labels:
+    app.kubernetes.io/component: manager
+    app.kubernetes.io/created-by: stepzen-graph-operator
+    app.kubernetes.io/instance: stepzen-graph-operator
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/name: deployment
+    app.kubernetes.io/part-of: stepzen-graph-operator
+    control-plane: stepzen-graph-operator
+    icpdsupport/addOnId: stepzen
+  name: stepzen-graph-operator
+  namespace: cp4i
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      control-plane: stepzen-graph-operator
+  template:
+    metadata:
+      annotations:
+        kubectl.kubernetes.io/default-container: manager
+        productID: 6ba6beb1cd3e49549b780f845293d546
+        productMetric: FREE
+        productName: IBM API Connect for GraphQL
+      labels:
+        control-plane: stepzen-graph-operator
+        icpdsupport/addOnId: stepzen
+    spec:
+      containers:
+        - args:
+            - --leader-elect
+          env:
+            - name: STEPZENGRAPHSERVER_IMAGE
+              value: cp.icr.io/cp/stepzen/zenserv2@sha256:53a759bc6f6794ca3dd4a3f4d6d870a767e5aff3f26e43af6cf2b5e6a0426858
+            - name: JDBCSERVICE_IMAGE
+              value: cp.icr.io/cp/stepzen/jdbc-proxy-without-driver@sha256:a55c57a140aabae473f18ecb849e298d3da53ff4ee6a04d4a7f46910318aae2e
+            - name: POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: MUTATING_WEBHOOK
+              value: stepzen-graph-mutating-webhook-configuration
+            - name: VALIDATING_WEBHOOK
+              value: stepzen-graph-validating-webhook-configuration
+            - name: WATCH_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: ENABLE_WEBHOOKS
+              value: "true"
+          image: icr.io/cpopen/ibm-stepzen-graph-operator@sha256:1f045153d5dbc18d56216cd84e2b75fd3af44cf58ee6fe8989e038aafdd6647a
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 8081
+            initialDelaySeconds: 15
+            periodSeconds: 20
+          name: manager
+          ports:
+            - containerPort: 9443
+              name: webhook-server
+              protocol: TCP
+          readinessProbe:
+            httpGet:
+              path: /readyz
+              port: 8081
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          resources:
+            limits:
+              cpu: 500m
+              memory: 128Mi
+            requests:
+              cpu: 10m
+              memory: 64Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+          volumeMounts:
+            - mountPath: /tmp/k8s-webhook-server/serving-certs
+              name: cert
+              readOnly: false
+      imagePullSecrets:
+        - name: ibm-entitlement-key
+      securityContext:
+        runAsNonRoot: true
+      serviceAccountName: stepzen-graph-operator
+      terminationGracePeriodSeconds: 10
+      volumes:
+        - emptyDir: {}
+          name: cert
+---
+apiVersion: admissionregistration.k8s.io/v1
+kind: MutatingWebhookConfiguration
+metadata:
+  labels:
+    icpdsupport/addOnId: stepzen
+  name: stepzen-graph-mutating-webhook-configuration
+webhooks:
+  - admissionReviewVersions:
+      - v1
+    clientConfig:
+      service:
+        name: stepzen-graph-webhook-service
+        namespace: cp4i
+        path: /mutate-stepzen-graph-ibm-com-v1beta1-stepzengraphserver
+    failurePolicy: Fail
+    name: mstepzengraphserver.kb.io
+    rules:
+      - apiGroups:
+          - stepzen-graph.ibm.com
+        apiVersions:
+          - v1beta1
+        operations:
+          - CREATE
+          - UPDATE
+        resources:
+          - stepzengraphservers
+    sideEffects: None
+spec:
+  template:
+    spec:
+      containers: []
+---
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingWebhookConfiguration
+metadata:
+  labels:
+    icpdsupport/addOnId: stepzen
+  name: stepzen-graph-validating-webhook-configuration
+webhooks:
+  - admissionReviewVersions:
+      - v1
+    clientConfig:
+      service:
+        name: stepzen-graph-webhook-service
+        namespace: cp4i
+        path: /validate-stepzen-graph-ibm-com-v1beta1-stepzengraphserver
+    failurePolicy: Fail
+    name: vstepzengraphserver.kb.io
+    rules:
+      - apiGroups:
+          - stepzen-graph.ibm.com
+        apiVersions:
+          - v1beta1
+        operations:
+          - CREATE
+          - UPDATE
+        resources:
+          - stepzengraphservers
+    sideEffects: None
+spec:
+  template:
+    spec:
+      containers: []
