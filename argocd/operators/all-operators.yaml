@@ -12,6 +12,8 @@ spec:
           namespace: cp4i
         - name: apiconnect
           namespace: cp4i
+        - name: apiconnect-graphql
+          namespace: cp4i
         - name: mq
           namespace: cp4i
         - name: eventstreams
