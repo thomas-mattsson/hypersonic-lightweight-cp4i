@@ -1,3 +1,4 @@
+# inventory/stepzenGraphOperator/files/deploy/crd.yaml from https://github.com/IBM/cloud-pak/blob/master/repo/case/ibm-stepzen-case/1.1.0/ibm-stepzen-case-1.1.0.tgz
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
