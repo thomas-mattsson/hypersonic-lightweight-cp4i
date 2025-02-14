@@ -1,5 +1,5 @@
 # inventory/stepzenGraphOperator/files/deploy/operatory.yaml from https://github.com/IBM/cloud-pak/blob/master/repo/case/ibm-stepzen-case/1.1.0/ibm-stepzen-case-1.1.0.tgz
-# namespace stepzen replaced with cp4i
+# namespace stepzen replaced with cp4i, cleaned up schema conflicts
 apiVersion: v1
 kind: ServiceAccount
 metadata:
@@ -13,10 +13,6 @@ metadata:
     icpdsupport/addOnId: stepzen
   name: stepzen-graph-operator
   namespace: cp4i
-spec:
-  template:
-    spec:
-      containers: []
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
@@ -63,10 +59,6 @@ rules:
     verbs:
       - create
       - patch
-spec:
-  template:
-    spec:
-      containers: []
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
@@ -180,10 +172,6 @@ rules:
       - get
       - patch
       - update
-spec:
-  template:
-    spec:
-      containers: []
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
@@ -201,10 +189,6 @@ rules:
       - get
       - update
       - delete
-spec:
-  template:
-    spec:
-      containers: []
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
@@ -227,10 +211,6 @@ subjects:
   - kind: ServiceAccount
     name: stepzen-graph-operator
     namespace: cp4i
-spec:
-  template:
-    spec:
-      containers: []
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
@@ -252,10 +232,6 @@ subjects:
   - kind: ServiceAccount
     name: stepzen-graph-operator
     namespace: cp4i
-spec:
-  template:
-    spec:
-      containers: []
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
@@ -271,10 +247,6 @@ subjects:
   - kind: ServiceAccount
     name: stepzen-graph-operator
     namespace: cp4i
-spec:
-  template:
-    spec:
-      containers: []
 ---
 apiVersion: v1
 kind: Service
@@ -296,9 +268,6 @@ spec:
       targetPort: 9443
   selector:
     control-plane: stepzen-graph-operator
-  template:
-    spec:
-      containers: []
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -427,10 +396,6 @@ webhooks:
         resources:
           - stepzengraphservers
     sideEffects: None
-spec:
-  template:
-    spec:
-      containers: []
 ---
 apiVersion: admissionregistration.k8s.io/v1
 kind: ValidatingWebhookConfiguration
@@ -459,7 +424,3 @@ webhooks:
         resources:
           - stepzengraphservers
     sideEffects: None
-spec:
-  template:
-    spec:
-      containers: []
