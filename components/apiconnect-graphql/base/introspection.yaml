@@ -1,0 +1,101 @@
+# inventory/stepzenGraphOperator/files/deploy/introspection.yaml from https://github.com/IBM/cloud-pak/blob/master/repo/case/ibm-stepzen-case/1.1.0/ibm-stepzen-case-1.1.0.tgz
+apiVersion: v1
+kind: Service
+metadata:
+  name: introspection-nodeport
+spec:
+  ports:
+    - name: introspection-port
+      port: 80
+      protocol: TCP
+      targetPort: 8080
+  selector:
+    app: introspection
+  type: NodePort
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: introspection
+    name: introspection
+  name: introspection
+spec:
+  minReadySeconds: 1
+  replicas: 1
+  selector:
+    matchLabels:
+      app: introspection
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+  template:
+    metadata:
+      labels:
+        app: introspection
+        name: introspection
+    spec:
+      containers:
+        - args:
+            - --port=8080
+            - --disable-telemetry
+          env:
+            - name: JAR_CLASSPATH
+              value: /var/jars/*
+            - name: JAVA_TOOL_OPTIONS
+              value: ""
+            - name: JAVA_OPTS
+              value: -XX:+UseParallelGC -XX:MaxRAMPercentage=25.0 -XX:MinRAMPercentage=50.0 -XX:InitialRAMPercentage=25.0 -XX:+UseContainerSupport
+          image: cp.icr.io/cp/stepzen/introspection-without-driver@sha256:ec3b4b0378d747ead8b1f525b7c49f13d6639e10cbd9ff185591792c8c7a78f3
+          livenessProbe:
+            failureThreshold: 4
+            httpGet:
+              path: /healthz
+              port: 8080
+            initialDelaySeconds: 3
+            periodSeconds: 10
+            timeoutSeconds: 1
+          name: introspection
+          ports:
+            - containerPort: 8080
+              name: http
+              protocol: TCP
+          readinessProbe:
+            failureThreshold: 2
+            httpGet:
+              path: /readyz
+              port: 8080
+            initialDelaySeconds: 3
+            periodSeconds: 5
+            timeoutSeconds: 1
+          resources:
+            limits:
+              cpu: "1.6"
+              memory: 5Gi
+            requests:
+              cpu: "1.6"
+              memory: 5Gi
+          securityContext:
+            privileged: false
+            runAsNonRoot: true
+          startupProbe:
+            failureThreshold: 10
+            httpGet:
+              path: /healthz
+              port: 8080
+            initialDelaySeconds: 3
+            periodSeconds: 10
+            timeoutSeconds: 1
+          volumeMounts:
+            - mountPath: /var/jars
+              name: driver-storage
+              readOnly: true
+      imagePullSecrets:
+        - name: ibm-entitlement-key
+      volumes:
+        - name: driver-storage
+          emptyDir: {}
+        - configMap:
+            name: introspection
+          name: config-volume
