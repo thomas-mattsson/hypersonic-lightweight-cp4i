@@ -4,8 +4,8 @@ metadata:
   name: stepzen-admin-cmd-job-role
 rules:
   - apiGroups:
-      - '' 
+      - stepzen-graph.ibm.com
     resources:
-      - secrets
+      - '*'
     verbs:
       - '*'

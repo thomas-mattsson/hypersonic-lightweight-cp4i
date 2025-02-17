@@ -7,7 +7,7 @@ spec:
     metadata:
       name: stepzen-admin
     spec:
-      securityAccount: stepzen-admin-cmd-job-sa
+      serviceAccount: stepzen-admin-cmd-job-sa
       initContainers:
         - name: wait-service
           image: registry.redhat.io/openshift4/ose-cli
