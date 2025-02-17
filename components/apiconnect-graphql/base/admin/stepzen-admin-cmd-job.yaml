@@ -22,6 +22,7 @@ spec:
           args:
             - '-c'
             - |
+              oc project
               curl --output /tmp/ibm-stepzen-case-1.1.0.tgz https://raw.githubusercontent.com/IBM/cloud-pak/refs/heads/master/repo/case/ibm-stepzen-case/1.1.0/ibm-stepzen-case-1.1.0.tgz
               cd /tmp
               tar -zxf ibm-stepzen-case-1.1.0.tgz
