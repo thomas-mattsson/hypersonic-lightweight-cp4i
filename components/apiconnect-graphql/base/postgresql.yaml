@@ -1,0 +1,31 @@
+apiVersion: postgres-operator.crunchydata.com/v1beta1
+kind: PostgresCluster
+metadata:
+  name: stepzen-db
+spec:
+  postgresVersion: 17
+  users:
+    - name: stepzen
+      databases:
+        - stepzen
+  instances:
+    - name: instance1
+      dataVolumeClaimSpec: PATCHED_BY_KUSTOMIZE
+        accessModes:
+        - "ReadWriteOnce"
+        storageClassName:
+        resources:
+          requests:
+            storage: 1Gi
+  backups:
+    pgbackrest:
+      repos:
+      - name: repo1
+        volume:
+          volumeClaimSpec:
+            accessModes:
+            - "ReadWriteOnce"
+            storageClassName: PATCHED_BY_KUSTOMIZE
+            resources:
+              requests:
+                storage: 1Gi
