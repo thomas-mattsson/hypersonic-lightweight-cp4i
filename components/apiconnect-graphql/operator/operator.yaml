@@ -1,5 +1,6 @@
 # inventory/stepzenGraphOperator/files/deploy/operatory.yaml from https://github.com/IBM/cloud-pak/blob/master/repo/case/ibm-stepzen-case/1.1.0/ibm-stepzen-case-1.1.0.tgz
 # namespace stepzen replaced with cp4i, cleaned up schema conflicts
+# added chrunchy postgres operator subscription at the end
 apiVersion: v1
 kind: ServiceAccount
 metadata:
@@ -424,3 +425,14 @@ webhooks:
         resources:
           - stepzengraphservers
     sideEffects: None
+---
+apiVersion: operators.coreos.com/v1alpha1
+kind: Subscription
+metadata:
+  name: crunchy-postgres-operator
+spec:
+  channel: v5
+  installPlanApproval: Automatic
+  name: crunchy-postgres-operator
+  source: certified-operators
+  sourceNamespace: openshift-marketplace
