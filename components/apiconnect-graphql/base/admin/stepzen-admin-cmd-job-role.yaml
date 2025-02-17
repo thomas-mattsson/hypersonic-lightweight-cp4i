@@ -13,3 +13,10 @@ rules:
     verbs:
       - list
       - get
+  - apiGroups:
+      - batch
+    resources:
+      - jobs
+    verbs:
+      - list
+      - get
