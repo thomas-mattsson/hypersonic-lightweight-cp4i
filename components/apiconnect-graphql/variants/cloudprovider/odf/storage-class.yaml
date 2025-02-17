@@ -1,0 +1,6 @@
+- op: replace
+  path: /spec/instances/0/dataVolumeClaimSpec/storageClassName
+  value: ocs-storagecluster-ceph-rbd
+- op: replace
+  path: /spec/backups/pgbackrest/repos/0/volume/volumeClaimSpec/storageClassName
+  value: ocs-storagecluster-ceph-rbd

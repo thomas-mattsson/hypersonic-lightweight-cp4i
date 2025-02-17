@@ -10,10 +10,10 @@ spec:
         - stepzen
   instances:
     - name: instance1
-      dataVolumeClaimSpec: PATCHED_BY_KUSTOMIZE
+      dataVolumeClaimSpec:
         accessModes:
         - "ReadWriteOnce"
-        storageClassName:
+        storageClassName: PATCHED_BY_KUSTOMIZE
         resources:
           requests:
             storage: 1Gi
