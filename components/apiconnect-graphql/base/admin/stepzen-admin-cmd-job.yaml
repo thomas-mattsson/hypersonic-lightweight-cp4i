@@ -1,0 +1,30 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: stepzen-admin-cmd-job
+spec:
+  template:
+    metadata:
+      name: stepzen-admin
+    spec:
+      securityAccount: stepzen-admin-cmd-job-sa
+      initContainers:
+        - name: wait-service
+          image: registry.redhat.io/openshift4/ose-cli
+          command: ["/bin/bash"]
+          args:
+            - '-c'
+            - 'while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://stepzen-graph-server/version)" != "200" ]]; do echo waiting for service; sleep 2s; done'
+      containers:
+        - name: script
+          image: registry.redhat.io/openshift4/ose-cli
+          command: ["/bin/bash"]
+          args:
+            - '-c'
+            - |
+              curl --output /tmp/ibm-stepzen-case-1.1.0.tgz https://raw.githubusercontent.com/IBM/cloud-pak/refs/heads/master/repo/case/ibm-stepzen-case/1.1.0/ibm-stepzen-case-1.1.0.tgz
+              cd /tmp
+              tar -zxf ibm-stepzen-case-1.1.0.tgz
+              cd /tmp/ibm-stepzen-case/inventory/stepzenGraphOperator/files/deploy
+              ./stepzen-admin.sh get-logs
+      restartPolicy: Never

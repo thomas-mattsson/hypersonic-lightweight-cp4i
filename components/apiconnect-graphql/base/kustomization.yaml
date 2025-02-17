@@ -3,6 +3,7 @@ kind: Kustomization
 
 resources:
   - postgresql
+  - admincmd
   - stepzen.yaml
   - routes.yaml
   - introspection.yaml
