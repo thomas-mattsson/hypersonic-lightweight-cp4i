@@ -6,4 +6,4 @@ components:
 - ../../../../components/apiconnect-graphql/variants/cloudprovider/azure
 
 resources:
-- ../../../../components/apiconnect/base
+- ../../../../components/apiconnect-graphql/base

@@ -6,4 +6,4 @@ components:
 - ../../../../components/apiconnect-graphql/variants/cloudprovider/ibm-vpc
 
 resources:
-- ../../../../components/apiconnect/base
+- ../../../../components/apiconnect-graphql/base
