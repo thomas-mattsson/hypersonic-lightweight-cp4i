@@ -4,3 +4,4 @@ kind: Kustomization
 resources:
   - postgresql
   - stepzen.yaml
+  - route.yaml
