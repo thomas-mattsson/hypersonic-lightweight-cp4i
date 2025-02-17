@@ -26,5 +26,5 @@ spec:
               cd /tmp
               tar -zxf ibm-stepzen-case-1.1.0.tgz
               cd /tmp/ibm-stepzen-case/inventory/stepzenGraphOperator/files/deploy
-              ./stepzen-admin.sh get-logs
+              ./stepzen-admin.sh add-account graphql
       restartPolicy: Never
