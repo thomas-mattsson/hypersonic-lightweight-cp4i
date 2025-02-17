@@ -20,3 +20,4 @@ rules:
     verbs:
       - list
       - get
+      - create
